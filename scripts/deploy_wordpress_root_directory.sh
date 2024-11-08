@@ -36,3 +36,9 @@ sed -i "s/localhost/$WORDPRESS_DB_HOST/" /var/www/html/wp-config.php
 #Cambiar propietario y grupo del directorio.
 
 chown -R www-data:www-data /var/www/html/
+
+# Habilitar el módulo mod_rewrite de Apache
+a2enmod rewrite
+
+# Reiniciar Apache para aplicar los cambios
+systemctl restart apache2
