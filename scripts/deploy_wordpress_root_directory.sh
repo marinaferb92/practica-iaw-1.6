@@ -1,4 +1,5 @@
 #!/bin/bash
+source .env
 
 # Para mostrar los comandos que se van ejecutando.
 set -ex
@@ -19,12 +20,16 @@ mv -f /tmp/wordpress/* /var/www/html
 # Eliminamos los archivos temporales.
 rm -rf /tmp/latest.tar.gz /tmp/wordpress
 
+
+cp /var/www/html/wp-config-sample.php /var/www/html/wp-config.php
+
 #Creamos una base de datos.
 mysql -u root <<< "DROP DATABASE IF EXISTS $WORDPRESS_DB_NAME"
 mysql -u root <<< "CREATE DATABASE $WORDPRESS_DB_NAME"
 mysql -u root <<< "DROP USER IF EXISTS $WORDPRESS_DB_USER@$IP_CLIENTE_MYSQL"
 mysql -u root <<< "CREATE USER $WORDPRESS_DB_USER@$IP_CLIENTE_MYSQL IDENTIFIED BY '$WORDPRESS_DB_PASSWORD'"
 mysql -u root <<< "GRANT ALL PRIVILEGES ON $WORDPRESS_DB_NAME.* TO $WORDPRESS_DB_USER@$IP_CLIENTE_MYSQL"
+
 
 #Configuramos el archivo de configuración de Wordpress
 
