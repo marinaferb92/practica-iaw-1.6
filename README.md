@@ -9,12 +9,13 @@ Para la realizacion de este apartado seguiremos los pasos detallados en la pract
 
 **Esta vez tenemos la siguiente IP elastica para nuestra maquina**
 
-  ![XAFmFL0REO](https://github.com/user-attachments/assets/c18ab7e9-c095-429e-a1f3-16270a55b96e)
-
+  ![bNabA1Ww5l](https://github.com/user-attachments/assets/ec67113e-343c-4890-8086-6d0cb5e3d4e9)
 
 [Practica-iaw-1.1](https://github.com/marinaferb92/practica-iaw-1.1/tree/main)
 
 [Script Install LAMP](https://github.com/marinaferb92/practica-iaw-1.1/blob/main/scripts/install_lamp.sh)
+
+
 
 Una vez hecho esto nos aseguraremos de que la Pila LAMP esta funcionando correctamente.
 
