@@ -13,6 +13,7 @@ Para la realizacion de este apartado seguiremos los pasos detallados en la pract
 
 
 [Practica-iaw-1.1](https://github.com/marinaferb92/practica-iaw-1.1/tree/main)
+
 [Script Install LAMP](https://github.com/marinaferb92/practica-iaw-1.1/blob/main/scripts/install_lamp.sh)
 
 Una vez hecho esto nos aseguraremos de que la Pila LAMP esta funcionando correctamente.
@@ -42,3 +43,8 @@ En nuestro caso lo hemos hecho a traves de No-IP, nos hemos registrado en la pá
 
 
 ## 4. Instalar Certbot y Configurar el Certificado SSL/TLS con Let’s Encrypt
+Para la realizacion de este apartado seguiremos los pasos detallados en la practica-iaw-1.5 y utilizaremos el script ``` setup_letsencrypt_certificate.sh ```.
+
+[Practica-iaw-1.5](https://github.com/marinaferb92/practica-iaw-1.5)
+
+[Script setup_letsencrypt_certificate.sh](scripts/setup_letsencrypt_certificate.sh)
