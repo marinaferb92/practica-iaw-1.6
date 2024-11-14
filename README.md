@@ -20,17 +20,13 @@ Una vez hecho esto nos aseguraremos de que la Pila LAMP esta funcionando correct
 
 - Verificaremos el estado de apache.
 
-  ![FkCt84dc5s](https://github.com/user-attachments/assets/6b3e4e45-9466-4530-9131-aa5c2fee0261)
+  ![MMA4oyDdYV](https://github.com/user-attachments/assets/ef998254-f5f8-4bc1-b702-0e41621b0844)
 
 
 - Entramos en mysql desde la terminal para ver que esta corriendo.
 
-  ![aRjemlGztT](https://github.com/user-attachments/assets/de538497-5c5e-4f2d-960f-310f02ba812c)
+  ![jYkXAri0jN](https://github.com/user-attachments/assets/c919d2a4-aaa8-4241-838d-698ef3685a2e)
 
-
-- Verificamos la instalacion de PHP
-
-  ![N4lOIyct2Z](https://github.com/user-attachments/assets/9204b9ca-64de-4fdf-b96f-b4e47479f762)
 
 
 ## 3. Registrar un Nombre de Dominio
@@ -204,7 +200,8 @@ a2enmod rewrite
 
 - Entramos con la IP o el nombre nuestro dominio desde un navegador a Wordpress, aqui Elegiremos el idioma en el que queremos que opere.
 
-  ![mOgxWNK7gc](https://github.com/user-attachments/assets/7bb89909-9fcf-4c33-a1f0-a37ad214bf45)
+  ![FkVfxaQAfg](https://github.com/user-attachments/assets/cd3b2621-6995-43df-aa14-bc9a371c4417)
+
 
 - Después de esto estableceremos las credenciales de acceso
 
@@ -220,7 +217,7 @@ a2enmod rewrite
 
 - Una vez hecho esto ya podriamos empezar a crear entradas.
 
-  ![oT3kazv6d7](https://github.com/user-attachments/assets/d0a79338-d1fd-44b9-92d8-3e60f7faef37)
+  ![9Ag1rgu607](https://github.com/user-attachments/assets/77c22e9a-6726-44f9-b35d-619ba23d3c33)
 
 
 
@@ -353,35 +350,101 @@ sed -i "s/localhost/$WORDPRESS_DB_HOST/" /var/www/html/$WORDPRESS_DIRECTORY/wp-c
 ````
 
 
-# Configurar WP_SITEURL y WP_HOME para el subdirectorio
+11. Configurar WP_SITEURL y WP_HOME para el subdirectorio
+
+Utilizamos *sed* para insertar las constantes ````WP_SITEURL y WP_HOME```` en el archivo *wp-config.php*, con ello configuramos la URL principal para que WordPress funcione desde el subdirectorio específico que hemos definido. Para ello tendremos que configurar en el archivo ```` .env ```` las variables ```` WP_SITEURL y WP_HOME````
+WordPress utilizará esta URL para generar enlaces y redirigir visitas
+
+
+````
+
 sed -i "/DB_COLLATE/a define('WP_SITEURL', 'https://$CERTIFICATE_DOMAIN/$WORDPRESS_DIRECTORY');" /var/www/html/$WORDPRESS_DIRECTORY/wp-config.php
 sed -i "/WP_SITEURL/a define('WP_HOME', 'https://$CERTIFICATE_DOMAIN/$WORDPRESS_DIRECTORY');" /var/www/html/$WORDPRESS_DIRECTORY/wp-config.php
 
-# Copiar el archivo index.php al directorio principal
+````
+
+
+
+12. Copiar el archivo index.php al directorio principal
+Copiamos *index.php* al directorio raíz de Apache, haciendo que las solicitudes a la URL principal se redirijan correctamente a la instalación de WordPress en el subdirectorio.
+
+````
 cp /var/www/html/$WORDPRESS_DIRECTORY/index.php /var/www/html
+````
 
-# Configurar el archivo index.php
+
+13. Configurar el archivo index.php
+
+Reemplazamos la ruta original de *wp-blog-header.php* por la ruta correcta que apunte al subdirectorio especificado en la variable $WORDPRESS_DIRECTORY.
+- **s#wp-blog-header.php#$WORDPRESS_DIRECTORY/wp-blog-header.php#** busca la cadena *wp-blog-header.php* en el archivo index.php y la reemplaza por */$WORDPRESS_DIRECTORY/wp-blog-header.php*.
+
+Para ellos utiliza la variable  ````$WORDPRESS_DIRECTORY```` guardada en el archivo ```.env```.
+Con esto aseguramos que WordPress funcione correctamente incluso cuando está instalado en un subdirectorio.
+
+````
 sed -i "s#wp-blog-header.php#$WORDPRESS_DIRECTORY/wp-blog-header.php#" /var/www/html/index.php
+````
 
-# Configurar las claves de seguridad
+
+14. Configurar las claves de seguridad
+
+- Descargamos claves de seguridad generadas aleatoriamente desde la API de WordPress.
+- Reemplazamos cualquier **/** en las claves con **_** para evitar problemas con el formato.
+- Insertamos las claves en *wp-config.php*
+
+````
+
 SECURITY_KEYS=$(curl https://api.wordpress.org/secret-key/1.1/salt/)
 SECURITY_KEYS=$(echo $SECURITY_KEYS | tr / _)
 sed -i "/@-/a $SECURITY_KEYS" /var/www/html/$WORDPRESS_DIRECTORY/wp-config.php
 
-# Configurar permisos
+````
+
+
+15. Configurar permisos
+Establecemos el usuario www-data de Apache como propietario del directorio y aseguramos acceso de lectura y escritura en todos los archivos necesarios.
+
+```
+
 chown -R www-data:www-data /var/www/html/
 chown -R www-data:www-data /var/www/html/$WORDPRESS_DIRECTORY/wp-content
 chmod -R 755 /var/www/html/$WORDPRESS_DIRECTORY
 
-# Habilitar el módulo mod_rewrite de Apache
+```
+
+16. Habilitar el módulo mod_rewrite de Apache
+
+HabilitaMOS el módulo *mod_rewrite* de Apache, para que WordPress maneje URL amigables
+
+````
 a2enmod rewrite
+````
 
-# Reiniciar Apache
-systemctl restart apache2
+17. Reiniciar Apache para aplicar los cambios
+
+````systemctl restart apache2````
 
 
+18. **COMPROBACIONES**
+
+- Entramos en Wordpress utilizando la IP  de la maquina o el nombre de dominio. 
+
+  ![NzCeDM4DFx](https://github.com/user-attachments/assets/eb8fe5ff-44c4-47a5-a875-8ef4b3fa6c95)
 
 
+- Después de esto estableceremos las credenciales de acceso
+
+  ![ZvhCm6eMfb](https://github.com/user-attachments/assets/55cc07d9-c4df-482c-9205-81d54e61ffff)
+
+
+- Una vez dentro de Apache iremos a *Ajustes -> Enlaces permanentes*. Para que la URL sea más estética, para ello elegiremos la opción **Nombre de la entrada** 
+
+  ![33X1xPQtDp](https://github.com/user-attachments/assets/9030a7e3-c80f-4f28-b82c-26373172a55d)
+
+
+- Una vez hecho esto ya podriamos empezar a crear entradas. Como vemos la URL de la pagina incluye el directorio que habiamos definido (https://practicahttpsmfb.ddns.net/wordpress/entrada-de-prueba/)
+
+  ![Up6ZLjrfvt](https://github.com/user-attachments/assets/e040fc46-3b69-4d7a-9ef2-899a04481a44)
 
 
 
