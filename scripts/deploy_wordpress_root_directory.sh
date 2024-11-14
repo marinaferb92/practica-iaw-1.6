@@ -4,7 +4,6 @@ source .env
 # Para mostrar los comandos que se van ejecutando.
 set -ex
 
-# Descargar la URL de WordPress, después de comprobar su funcionamiento.
 # Descargamos el código fuente de WordPress.
 wget http://wordpress.org/latest.tar.gz -P /tmp
 
