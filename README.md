@@ -84,7 +84,7 @@ rm -rf /var/www/html/*
 
 ````
 
-5. # Extraemos el archivo descargado.
+5. Extraemos el archivo descargado.
 
 Extraemos el archivo en el directorio /tmp. Con la opción f se specifica el nombre del archivo de entrada (/tmp/latest.tar.gz) y con la opción -C indicamos donde debe extrarse  el contenido **/tmp**.
 
@@ -125,9 +125,26 @@ cp /var/www/html/wp-config-sample.php /var/www/html/wp-config.php
 
 ````
 
-9. 
+9. Creamos una base de datos.
 
+**Configuramos la base de datos en MySQL usando comandos SQL enviados directamente a mysql. Cada línea tiene una función específica**:
+-Eliminar la base de datos existente.
+-Crear una nueva base de datos.
+-Eliminar el usuario existente.
+-Crear un nuevo usuario.
+-Otorgar permisos al usuario.
 
+Para esto deberemos configurar en el archivo ```` .env ```` las variables ```` WORDPRESS_DB_NAME, 
+ WORDPRESS_DB_USER, WORDPRESS_DB_PASSWORD, IP_CLIENTE_MYSQL, WORDPRESS_DB_HOST````
+````
+
+mysql -u root <<< "DROP DATABASE IF EXISTS $WORDPRESS_DB_NAME"
+mysql -u root <<< "CREATE DATABASE $WORDPRESS_DB_NAME"
+mysql -u root <<< "DROP USER IF EXISTS $WORDPRESS_DB_USER@$IP_CLIENTE_MYSQL"
+mysql -u root <<< "CREATE USER $WORDPRESS_DB_USER@$IP_CLIENTE_MYSQL IDENTIFIED BY '$WORDPRESS_DB_PASSWORD'"
+mysql -u root <<< "GRANT ALL PRIVILEGES ON $WORDPRESS_DB_NAME.* TO $WORDPRESS_DB_USER@$IP_CLIENTE_MYSQL"
+
+````
 
 
 
