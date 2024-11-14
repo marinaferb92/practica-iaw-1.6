@@ -63,3 +63,72 @@ El primer paso de nuestro script sera crear un archivo de variable ``` . env ```
 Configuraremos el script para que en caso de que haya errores en algun comando este se detenga ```-e```, ademas de que para que nos muestre los comando antes de ejecutarlos ```-x```.
 
 ``` set -ex ```
+
+3. Descargamos el código fuente de WordPress.
+
+Con el comando wget descargamos la última versión de WordPress en formato comprimido (.tar.gz) desde la URL oficial al directorio **/tmp.**
+
+````
+
+wget http://wordpress.org/latest.tar.gz -P /tmp
+
+````
+
+4. Borramos instalaciones previas de WordPress en el directorio de destino.
+
+Eliminamos cualquier instalación previa de WordPress en el directorio /var/www/html, para que en caso de que ejecutemos el entorno este limpio y no haya conflictos.
+
+````
+
+rm -rf /var/www/html/*
+
+````
+
+5. # Extraemos el archivo descargado.
+
+Extraemos el archivo en el directorio /tmp. Con la opción f se specifica el nombre del archivo de entrada (/tmp/latest.tar.gz) y con la opción -C indicamos donde debe extrarse  el contenido **/tmp**.
+
+````
+
+tar -xzvf /tmp/latest.tar.gz -C /tmp
+
+````
+
+6. Movemos el contenido de WordPress al directorio de destino.
+
+Movemos todos los archivos extraídos de **/tmp/wordpress** a **/var/www/html**, el directorio raíz de Apache. Con la opción -f (force) sobrescribimos cualquier archivo existente en el destino sin pedir confirmación.
+
+````
+
+mv -f /tmp/wordpress/* /var/www/html
+
+````
+
+7. Eliminamos los archivos temporales.
+
+Eliminamos el archivo comprimido descargado y el directorio /tmp/wordpress después de haber movido los archivos, liberando espacio en el directorio /tmp.
+
+````
+
+rm -rf /tmp/latest.tar.gz /tmp/wordpress
+
+
+````
+
+8. Renombramos en archivo *wp-config-sample.php* como *wp-config.php*
+
+Copiamos el archivo de configuración *wp-config-sample.php* y lo renombra a *wp-config.php*, ya que WordPress necesita un archivo llamado *wp-config.php* para funcionar. 
+
+````
+
+cp /var/www/html/wp-config-sample.php /var/www/html/wp-config.php
+
+````
+
+9. 
+
+
+
+
+
+
