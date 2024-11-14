@@ -49,7 +49,7 @@ Para la realizacion de este apartado seguiremos los pasos detallados en la pract
 
 [Script setup_letsencrypt_certificate.sh](scripts/setup_letsencrypt_certificate.sh)
 
-#Instalación de WordPress en el directorio raíz de Apache
+# Instalación de WordPress en el directorio raíz de Apache
 Tras los pasos anteriores y que se hayan ejecutado exitosamente los scripts ``` install_lamp.sh ``` y ``` setup_letsencrypt_certificate.sh ```, comenzaremos primero con el desarrollo del script para la instlación y configuración de Wordpress en el directorio raíz.
 
 1. Cargamos el archivo de variables
