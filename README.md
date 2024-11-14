@@ -48,3 +48,18 @@ Para la realizacion de este apartado seguiremos los pasos detallados en la pract
 [Practica-iaw-1.5](https://github.com/marinaferb92/practica-iaw-1.5)
 
 [Script setup_letsencrypt_certificate.sh](scripts/setup_letsencrypt_certificate.sh)
+
+#Instalación de WordPress en el directorio raíz de Apache
+Tras los pasos anteriores y que se hayan ejecutado exitosamente los scripts ``` install_lamp.sh ``` y ``` setup_letsencrypt_certificate.sh ```, comenzaremos primero con el desarrollo del script para la instlación y configuración de Wordpress en el directorio raíz.
+
+1. Cargamos el archivo de variables
+   
+El primer paso de nuestro script sera crear un archivo de variable ``` . env ``` donde iremos definiendo las diferentes variables que necesitemos, y cargarlo en el entorno del script.
+
+``` source.env ```
+
+2. Configuramos el script
+   
+Configuraremos el script para que en caso de que haya errores en algun comando este se detenga ```-e```, ademas de que para que nos muestre los comando antes de ejecutarlos ```-x```.
+
+``` set -ex ```
